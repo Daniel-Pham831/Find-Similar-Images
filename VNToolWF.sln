@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32526.322
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VNToolWF", "VNToolWF\VNToolWF.csproj", "{F225FAC8-96B3-4942-8CCB-C1D4E013F1A1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F225FAC8-96B3-4942-8CCB-C1D4E013F1A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F225FAC8-96B3-4942-8CCB-C1D4E013F1A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F225FAC8-96B3-4942-8CCB-C1D4E013F1A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F225FAC8-96B3-4942-8CCB-C1D4E013F1A1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5F728CA7-A8D9-488D-A2D4-D98B134F165F}
+	EndGlobalSection
+EndGlobal
