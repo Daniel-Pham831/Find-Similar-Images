@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.dgvTable = new System.Windows.Forms.DataGridView();
             this.btnOpenDialog = new System.Windows.Forms.Button();
+            this.dgvTable = new System.Windows.Forms.DataGridView();
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pathDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sizeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -53,6 +53,17 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Shower";
             // 
+            // btnOpenDialog
+            // 
+            this.btnOpenDialog.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnOpenDialog.Location = new System.Drawing.Point(1202, 19);
+            this.btnOpenDialog.Name = "btnOpenDialog";
+            this.btnOpenDialog.Size = new System.Drawing.Size(184, 39);
+            this.btnOpenDialog.TabIndex = 1;
+            this.btnOpenDialog.Text = "Open Folder";
+            this.btnOpenDialog.UseVisualStyleBackColor = true;
+            this.btnOpenDialog.MouseClick += new System.Windows.Forms.MouseEventHandler(this.btnOpenDialog_MouseClick);
+            // 
             // dgvTable
             // 
             this.dgvTable.AllowUserToAddRows = false;
@@ -67,42 +78,32 @@
             this.pathDataGridViewTextBoxColumn,
             this.sizeDataGridViewTextBoxColumn});
             this.dgvTable.DataSource = this.fileItemBindingSource;
-            this.dgvTable.Location = new System.Drawing.Point(6, 19);
+            this.dgvTable.Location = new System.Drawing.Point(12, 19);
             this.dgvTable.Name = "dgvTable";
             this.dgvTable.ReadOnly = true;
             this.dgvTable.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.dgvTable.Size = new System.Drawing.Size(1175, 419);
             this.dgvTable.TabIndex = 0;
-            // 
-            // btnOpenDialog
-            // 
-            this.btnOpenDialog.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOpenDialog.Location = new System.Drawing.Point(1202, 19);
-            this.btnOpenDialog.Name = "btnOpenDialog";
-            this.btnOpenDialog.Size = new System.Drawing.Size(184, 39);
-            this.btnOpenDialog.TabIndex = 1;
-            this.btnOpenDialog.Text = "Open Folder";
-            this.btnOpenDialog.UseVisualStyleBackColor = true;
-            this.btnOpenDialog.MouseClick += new System.Windows.Forms.MouseEventHandler(this.btnOpenDialog_MouseClick);
+            this.dgvTable.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTable_CellDoubleClick);
             // 
             // nameDataGridViewTextBoxColumn
             // 
             this.nameDataGridViewTextBoxColumn.DataPropertyName = "name";
-            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
+            this.nameDataGridViewTextBoxColumn.HeaderText = "File Name";
             this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
             this.nameDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // pathDataGridViewTextBoxColumn
             // 
             this.pathDataGridViewTextBoxColumn.DataPropertyName = "path";
-            this.pathDataGridViewTextBoxColumn.HeaderText = "Paths";
+            this.pathDataGridViewTextBoxColumn.HeaderText = "File Paths";
             this.pathDataGridViewTextBoxColumn.Name = "pathDataGridViewTextBoxColumn";
             this.pathDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // sizeDataGridViewTextBoxColumn
             // 
-            this.sizeDataGridViewTextBoxColumn.DataPropertyName = "size";
-            this.sizeDataGridViewTextBoxColumn.HeaderText = "Size";
+            this.sizeDataGridViewTextBoxColumn.DataPropertyName = "sizeInKiloByte";
+            this.sizeDataGridViewTextBoxColumn.HeaderText = "Size In KB";
             this.sizeDataGridViewTextBoxColumn.Name = "sizeDataGridViewTextBoxColumn";
             this.sizeDataGridViewTextBoxColumn.ReadOnly = true;
             // 
@@ -132,10 +133,10 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.DataGridView dgvTable;
         private System.Windows.Forms.Button btnOpenDialog;
+        private System.Windows.Forms.BindingSource fileItemBindingSource;
         private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn pathDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn sizeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.BindingSource fileItemBindingSource;
     }
 }
 

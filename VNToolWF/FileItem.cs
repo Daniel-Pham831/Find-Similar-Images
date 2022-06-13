@@ -10,6 +10,7 @@ namespace VNToolWF
     {
         public string name { get; set; }
         public string path { get; set; }
+        public string sizeInKiloByte { get; set; }
         public long size { get; set; }
     }
 }
