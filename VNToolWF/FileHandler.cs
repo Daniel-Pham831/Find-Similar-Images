@@ -10,20 +10,20 @@ namespace VNToolWF
     public class FileHandler
     {
         private readonly string processType = "*.png";
-        private Dictionary<string, string> fullPaths;
+        private Dictionary<string ,List<string>> DuplicatedPaths;
         public List<FileItem> DuplicatedItems;
         
         public void ProcessFolder(string folderPath)
         {
             DuplicatedItems = new List<FileItem>();
-            fullPaths = new Dictionary<string, string>();
+            DuplicatedPaths = new Dictionary<string, List<string>>();
 
             ListFilesInDicrectory(folderPath, processType);
         }
 
-        public string GetFilePathsFromFileNames(string fileName)
+        public List<string> GetFilePathsFromFileNames(string fileName)
         {
-            return fullPaths.ContainsKey(fileName)? fullPaths[fileName]:"";
+            return DuplicatedPaths[fileName];
         }
 
         private void ListFilesInDicrectory(string path, string type)
@@ -46,14 +46,12 @@ namespace VNToolWF
                     }
                 );
 
-                if (fullPaths.ContainsKey(fileName))
+                if (!DuplicatedPaths.ContainsKey(fileName))
                 {
-                    fullPaths[fileName] += " " + filePath;
+                    DuplicatedPaths[fileName] = new List<string>();
                 }
-                else
-                {
-                    fullPaths[fileName] = filePath;
-                }
+
+                DuplicatedPaths[fileName].Add(filePath);
             }
 
             FindDuplicateFiles(filesInfo);

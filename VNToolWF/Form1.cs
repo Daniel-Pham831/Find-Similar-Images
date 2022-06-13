@@ -56,31 +56,28 @@ namespace VNToolWF
             int rowIndex = e.RowIndex;
             FileItem fileItem = GetCorrectFileNameFromDataGridViewRow(rowIndex);
 
-            string filePaths = FileHandler.GetFilePathsFromFileNames(fileItem.name);
+            List<string> filePaths = FileHandler.GetFilePathsFromFileNames(fileItem.name);
 
             string winMergePath = @"C:\Program Files (x86)\WinMerge\WinMergeU.exe";
 
             ExecuteCommand(winMergePath, filePaths);
         }
 
-        static void ExecuteCommand(string toolPath, string arguments)
+        static void ExecuteCommand(string toolPath, List<string> arguments)
         {
-            string FilePath = Path.Combine(@"C:\TestCMD", "JohnCena.bat");
-
-            //using (StreamWriter writer = File.CreateText(FilePath))
-            //{
-            //    // write "ping" into the file
-            //    writer.WriteLine(command);
-            //}
-            //Process ps = new Process();
-            //ps.StartInfo.FileName = FilePath;
-
-            //ps.Start();
             Process process = new Process();
             ProcessStartInfo startInfo = new ProcessStartInfo();
-            //startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
             startInfo.FileName = "cmd.exe";
-            string command = "/K " + "\"" + toolPath + " " + arguments + "\"";
+
+            toolPath = "\"" + toolPath + "\"";
+            string paths = "";
+            foreach (var argument in arguments)
+            {
+                paths += "\"" + argument + "\" ";
+            }
+
+            string command = "/C " + "\"" + toolPath + " " + paths + "\"" ;
             startInfo.Arguments = command;
             process.StartInfo = startInfo;
             process.Start();
