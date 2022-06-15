@@ -10,20 +10,35 @@ namespace VNToolWF
     public class FileHandler
     {
         private readonly string processType = "*.png";
+        private string folderPath = "";
         private Dictionary<string ,List<string>> DuplicatedPaths;
         public List<FileItem> DuplicatedItems;
         
-        public void ProcessFolder(string folderPath)
+        public void ProcessFolder(string folderPath = "")
         {
+            if(folderPath == "")
+            {
+                folderPath = this.folderPath;
+            }
+            else
+            {
+                this.folderPath = folderPath;
+            }
+
             DuplicatedItems = new List<FileItem>();
             DuplicatedPaths = new Dictionary<string, List<string>>();
-
+            
             ListFilesInDicrectory(folderPath, processType);
         }
 
         public List<string> GetFilePathsFromFileNames(string fileName)
         {
             return DuplicatedPaths[fileName];
+        }
+
+        public string GetFullPath(string shortenPath)
+        {
+            return folderPath + shortenPath;
         }
 
         private void ListFilesInDicrectory(string path, string type)

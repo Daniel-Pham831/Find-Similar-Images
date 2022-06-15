@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.WindowsAPICodePack.Dialogs;
+
 
 namespace VNToolWF
 {
@@ -31,66 +33,40 @@ namespace VNToolWF
         {
             string path = "";
 
-            FolderBrowserDialog fbd = new FolderBrowserDialog();
-            if (fbd.ShowDialog() == DialogResult.OK)
+            CommonOpenFileDialog dialog = new CommonOpenFileDialog();
+            dialog.IsFolderPicker = true;
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
             {
-                path = fbd.SelectedPath;
+                path = dialog.FileName;
                 FileHandler.ProcessFolder(path);
                 ShowDataGridView(FileHandler.DuplicatedItems);
             }
+
         }
 
         private void ShowDataGridView(List<FileItem> duplicatedItems)
         {
             dgvTable.DataSource = duplicatedItems;
 
-            for (int i = 0; i <= dgvTable.Columns.Count - 1; i++)
-            {
-                //dgvTable.Columns[i].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-                dgvTable.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            }
+            dgvTable.AutoResizeColumns();
         }
 
         private void dgvTable_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             int rowIndex = e.RowIndex;
-            FileItem fileItem = GetCorrectFileNameFromDataGridViewRow(rowIndex);
+            if (rowIndex == -1) return;
 
+            FileItem fileItem = GetCorrectFileNameFromDataGridViewRow(rowIndex);
             List<string> filePaths = FileHandler.GetFilePathsFromFileNames(fileItem.name);
 
-            string winMergePath = @"C:\Program Files (x86)\WinMerge\WinMergeU.exe";
-
-            ExecuteCommand(winMergePath, filePaths);
+            CommandHandler.ExecuteCommand(filePaths);
         }
-
-        static void ExecuteCommand(string toolPath, List<string> arguments)
-        {
-            Process process = new Process();
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-            startInfo.FileName = "cmd.exe";
-
-            toolPath = "\"" + toolPath + "\"";
-            string paths = "";
-            foreach (var argument in arguments)
-            {
-                paths += "\"" + argument + "\" ";
-            }
-
-            string command = "/C " + "\"" + toolPath + " " + paths + "\"" ;
-            startInfo.Arguments = command;
-            process.StartInfo = startInfo;
-            process.Start();
-
-            process.WaitForExit();
-        }
-
 
         private FileItem GetCorrectFileNameFromDataGridViewRow(int rowIndex)
         {
             DataGridViewRow row = dgvTable.Rows[rowIndex];
 
-            while((row.DataBoundItem as FileItem).name == "")
+            while ((row.DataBoundItem as FileItem).name == "")
             {
                 row = dgvTable.Rows[--rowIndex];
                 if (rowIndex < 0)
@@ -98,6 +74,68 @@ namespace VNToolWF
             }
 
             return (row.DataBoundItem as FileItem);
+        }
+
+        private void dgvTable_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Delete)
+            {
+                if (IsAnyRowSeleted())
+                {
+                    DialogResult d = MessageBox.Show("Are you sure that you want to delete these?", "Are you sure?", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                    if (d == DialogResult.Yes)
+                    {
+                        DeleteSeletedRow();
+                    }
+                }
+            }
+        }
+
+        private void DeleteSeletedRow()
+        {
+            List<FileItem> selectedFileItems = GetAllSelectedFileItems();
+
+            List<string> shouldDeletedFilePaths = FileItem.GetAllPaths(selectedFileItems);
+
+            foreach (var path in shouldDeletedFilePaths)
+            {
+                File.Delete(FileHandler.GetFullPath(path));
+            }
+
+            FileHandler.ProcessFolder();
+            ShowDataGridView(FileHandler.DuplicatedItems);
+        }
+
+        private List<FileItem> GetAllSelectedFileItems()
+        {
+            List<FileItem> selectedFileItems = new List<FileItem>();
+
+            for (int i = 0; i < dgvTable.Rows.Count - 1; i++)
+            {
+                for (int j = 0; j < dgvTable.Columns.Count - 1; j++)
+                {
+                    if (dgvTable.Rows[i].Cells[j].Selected)
+                    {
+                        selectedFileItems.Add(dgvTable.Rows[i].DataBoundItem as FileItem);
+                        break;
+                    }
+                }
+            }
+
+            return selectedFileItems;
+        }
+
+        private bool IsAnyRowSeleted()
+        {
+            for (int i = 0; i < dgvTable.Rows.Count -1; i++)
+            {
+                if (dgvTable.Rows[i].Cells.Cast<DataGridViewCell>().FirstOrDefault(c => c.Selected) != null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

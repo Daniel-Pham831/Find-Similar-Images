@@ -34,7 +34,7 @@
             this.dgvTable = new System.Windows.Forms.DataGridView();
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pathDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.sizeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.sizeInKiloByteDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fileItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTable)).BeginInit();
@@ -43,20 +43,20 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.AutoSize = true;
+            this.groupBox1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox1.Controls.Add(this.btnOpenDialog);
             this.groupBox1.Controls.Add(this.dgvTable);
-            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox1.Location = new System.Drawing.Point(0, 0);
+            this.groupBox1.Location = new System.Drawing.Point(0, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1398, 533);
+            this.groupBox1.Size = new System.Drawing.Size(878, 457);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Shower";
             // 
             // btnOpenDialog
             // 
             this.btnOpenDialog.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOpenDialog.Location = new System.Drawing.Point(1202, 19);
+            this.btnOpenDialog.Location = new System.Drawing.Point(688, 19);
             this.btnOpenDialog.Name = "btnOpenDialog";
             this.btnOpenDialog.Size = new System.Drawing.Size(184, 39);
             this.btnOpenDialog.TabIndex = 1;
@@ -76,36 +76,37 @@
             this.dgvTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.nameDataGridViewTextBoxColumn,
             this.pathDataGridViewTextBoxColumn,
-            this.sizeDataGridViewTextBoxColumn});
+            this.sizeInKiloByteDataGridViewTextBoxColumn});
             this.dgvTable.DataSource = this.fileItemBindingSource;
-            this.dgvTable.Location = new System.Drawing.Point(12, 19);
+            this.dgvTable.Location = new System.Drawing.Point(6, 19);
             this.dgvTable.Name = "dgvTable";
             this.dgvTable.ReadOnly = true;
             this.dgvTable.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.dgvTable.Size = new System.Drawing.Size(1175, 419);
+            this.dgvTable.Size = new System.Drawing.Size(676, 419);
             this.dgvTable.TabIndex = 0;
             this.dgvTable.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvTable_CellDoubleClick);
+            this.dgvTable.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvTable_KeyDown);
             // 
             // nameDataGridViewTextBoxColumn
             // 
             this.nameDataGridViewTextBoxColumn.DataPropertyName = "name";
-            this.nameDataGridViewTextBoxColumn.HeaderText = "File Name";
+            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
             this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
             this.nameDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // pathDataGridViewTextBoxColumn
             // 
             this.pathDataGridViewTextBoxColumn.DataPropertyName = "path";
-            this.pathDataGridViewTextBoxColumn.HeaderText = "File Paths";
+            this.pathDataGridViewTextBoxColumn.HeaderText = "Path";
             this.pathDataGridViewTextBoxColumn.Name = "pathDataGridViewTextBoxColumn";
             this.pathDataGridViewTextBoxColumn.ReadOnly = true;
             // 
-            // sizeDataGridViewTextBoxColumn
+            // sizeInKiloByteDataGridViewTextBoxColumn
             // 
-            this.sizeDataGridViewTextBoxColumn.DataPropertyName = "sizeInKiloByte";
-            this.sizeDataGridViewTextBoxColumn.HeaderText = "Size In KB";
-            this.sizeDataGridViewTextBoxColumn.Name = "sizeDataGridViewTextBoxColumn";
-            this.sizeDataGridViewTextBoxColumn.ReadOnly = true;
+            this.sizeInKiloByteDataGridViewTextBoxColumn.DataPropertyName = "sizeInKiloByte";
+            this.sizeInKiloByteDataGridViewTextBoxColumn.HeaderText = "Size in KB";
+            this.sizeInKiloByteDataGridViewTextBoxColumn.Name = "sizeInKiloByteDataGridViewTextBoxColumn";
+            this.sizeInKiloByteDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // fileItemBindingSource
             // 
@@ -115,16 +116,19 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1398, 533);
+            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ClientSize = new System.Drawing.Size(890, 533);
             this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
+            this.Text = "VNTool - Find Duplicate Files";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvTable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fileItemBindingSource)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -136,7 +140,7 @@
         private System.Windows.Forms.BindingSource fileItemBindingSource;
         private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn pathDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn sizeDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn sizeInKiloByteDataGridViewTextBoxColumn;
     }
 }
 
