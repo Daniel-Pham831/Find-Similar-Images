@@ -16,7 +16,10 @@ namespace VNToolWF
 {
     public partial class Form1 : Form
     {
-        public FileHandler FileHandler;
+        public FileHandler fileHandler;
+        private Color color1 = Color.White;
+        private Color color2 = Color.LightBlue;
+
 
         public Form1()
         {
@@ -25,117 +28,149 @@ namespace VNToolWF
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            FileHandler = new FileHandler();
-            // DO nothing
+            fileHandler = new FileHandler();
+            fileHandler.OnFindAllDuplicatedFinished += ShowDuplicatedDGV;
+            fileHandler.OnFindAllSimilarFinished += ShowSimilarDGV;
+            labProcess.Text = "";
+        }
+
+        private void ShowSimilarDGV()
+        {
+            Invoke((Action)delegate {
+                ShowDataGridView(ref dgvSimilar, fileHandler.SimilarImages);
+                ChangeSimilarDGVRowsColor(ref dgvSimilar);
+            });
+        }
+
+
+        private void ShowDuplicatedDGV()
+        {
+            ShowDataGridView(ref dgvDuplicated, fileHandler.DuplicatedItems);
+            ChangeDuplicatedDGVRowsColor(ref dgvDuplicated, fileHandler.DuplicatedGroups);
         }
 
         private void btnOpenDialog_MouseClick(object sender, MouseEventArgs e)
         {
             string path = "";
 
-            CommonOpenFileDialog dialog = new CommonOpenFileDialog();
-            dialog.IsFolderPicker = true;
-            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+            using (CommonOpenFileDialog dialog = new CommonOpenFileDialog())
             {
-                path = dialog.FileName;
-                FileHandler.ProcessFolder(path);
-                ShowDataGridView(FileHandler.DuplicatedItems);
-            }
-
-        }
-
-        private void ShowDataGridView(List<FileItem> duplicatedItems)
-        {
-            dgvTable.DataSource = duplicatedItems;
-
-            dgvTable.AutoResizeColumns();
-        }
-
-        private void dgvTable_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            int rowIndex = e.RowIndex;
-            if (rowIndex == -1) return;
-
-            FileItem fileItem = GetCorrectFileNameFromDataGridViewRow(rowIndex);
-            List<string> filePaths = FileHandler.GetFilePathsFromFileNames(fileItem.name);
-
-            CommandHandler.ExecuteCommand(filePaths);
-        }
-
-        private FileItem GetCorrectFileNameFromDataGridViewRow(int rowIndex)
-        {
-            DataGridViewRow row = dgvTable.Rows[rowIndex];
-
-            while ((row.DataBoundItem as FileItem).name == "")
-            {
-                row = dgvTable.Rows[--rowIndex];
-                if (rowIndex < 0)
-                    return null;
-            }
-
-            return (row.DataBoundItem as FileItem);
-        }
-
-        private void dgvTable_KeyDown(object sender, KeyEventArgs e)
-        {
-            if(e.KeyCode == Keys.Delete)
-            {
-                if (IsAnyRowSeleted())
+                dialog.IsFolderPicker = true;
+                if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
-                    DialogResult d = MessageBox.Show("Are you sure that you want to delete these?", "Are you sure?", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-                    if (d == DialogResult.Yes)
-                    {
-                        DeleteSeletedRow();
-                    }
+                    path = dialog.FileName;
+                    fileHandler.ProcessFolder(path);
                 }
             }
         }
 
-        private void DeleteSeletedRow()
+        private void ShowDataGridView(ref DataGridView dgvToShow, List<FileItem> dataToShow)
         {
-            List<FileItem> selectedFileItems = GetAllSelectedFileItems();
+            dgvToShow.DataSource = dataToShow;
+
+            dgvToShow.Update();
+            dgvToShow.AutoResizeColumns();
+        }
+
+        private void ChangeDuplicatedDGVRowsColor(ref DataGridView dgv,Queue<int> duplicatedGroup)
+        {
+            int rowCounter = 0;
+            bool shouldChangeColor = true;
+            while (duplicatedGroup.Count != 0)
+            {
+                int numOfItemPerGroup = duplicatedGroup.Dequeue();
+                for (int i = 0; i < numOfItemPerGroup; i++)
+                {
+                    DataGridViewRow row = dgv.Rows[rowCounter++];
+                    row.DefaultCellStyle.BackColor = shouldChangeColor ? color1 : color2;
+                }
+
+                shouldChangeColor = !shouldChangeColor;
+            }
+
+            dgv.Refresh();
+            dgv.AutoResizeColumns();
+        }
+
+        private void ChangeSimilarDGVRowsColor(ref DataGridView dgvSimilar)
+        {
+            bool shouldChangeColor = false;
+            for (int i = 0; i < dgvSimilar.Rows.Count; i++)
+            {
+                if (i % 2 == 0)
+                    shouldChangeColor = !shouldChangeColor;
+
+                DataGridViewRow row = dgvSimilar.Rows[i];
+                row.DefaultCellStyle.BackColor = shouldChangeColor ? color1 : color2;
+            }
+
+        }
+
+        private void dgvTable_KeyDown(object sender, KeyEventArgs e)
+        {
+            HandleKeyEvents(dgvDuplicated, e);
+        }
+        private void dgvSimilar_KeyDown(object sender, KeyEventArgs e)
+        {
+            HandleKeyEvents(dgvSimilar, e);
+        }
+
+        private void HandleKeyEvents(DataGridView dgv, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Delete:
+                    if (IsAnyRowSeleted(dgv))
+                    {
+                        DialogResult d = MessageBox.Show("Are you sure that you want to delete these?", "Are you sure?", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                        if (d == DialogResult.Yes)
+                        {
+                            DeleteSeletedRow(dgv);
+                        }
+                    }
+                    break;
+
+                case Keys.Enter:
+                    if (IsAnyRowSeleted(dgv))
+                    {
+                        List<FileItem> selectedFileItems = GetAllSelectedFileItems(dgv);
+                        List<string> fullPaths = FileItem.GetAllPaths(selectedFileItems);
+
+                        CommandHandler.ExecuteWinMergeCommand(fullPaths);
+                    }
+                    break;
+            }
+        }
+
+        private void DeleteSeletedRow(DataGridView dgv)
+        {
+            List<FileItem> selectedFileItems = GetAllSelectedFileItems(dgv);
 
             List<string> shouldDeletedFilePaths = FileItem.GetAllPaths(selectedFileItems);
 
             foreach (var path in shouldDeletedFilePaths)
             {
-                File.Delete(FileHandler.GetFullPath(path));
+                File.Delete(path);
             }
 
-            FileHandler.ProcessFolder();
-            ShowDataGridView(FileHandler.DuplicatedItems);
+            fileHandler.ProcessFolder();
         }
 
-        private List<FileItem> GetAllSelectedFileItems()
+        private List<FileItem> GetAllSelectedFileItems(DataGridView dgv)
         {
             List<FileItem> selectedFileItems = new List<FileItem>();
 
-            for (int i = 0; i < dgvTable.Rows.Count - 1; i++)
+            foreach (DataGridViewRow row in dgv.SelectedRows)
             {
-                for (int j = 0; j < dgvTable.Columns.Count - 1; j++)
-                {
-                    if (dgvTable.Rows[i].Cells[j].Selected)
-                    {
-                        selectedFileItems.Add(dgvTable.Rows[i].DataBoundItem as FileItem);
-                        break;
-                    }
-                }
+                selectedFileItems.Add(row.DataBoundItem as FileItem);
             }
 
             return selectedFileItems;
         }
 
-        private bool IsAnyRowSeleted()
+        private bool IsAnyRowSeleted(DataGridView dgv)
         {
-            for (int i = 0; i < dgvTable.Rows.Count -1; i++)
-            {
-                if (dgvTable.Rows[i].Cells.Cast<DataGridViewCell>().FirstOrDefault(c => c.Selected) != null)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return dgv.SelectedRows.Count != 0;
         }
     }
 }
