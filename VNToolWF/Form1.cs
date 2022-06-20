@@ -66,9 +66,10 @@ namespace VNToolWF
 
         private void ShowDataGridView(ref DataGridView dgvToShow, List<FileItem> dataToShow)
         {
-            dgvToShow.DataSource = dataToShow;
+            BindingSource bs = new BindingSource();
+            bs.DataSource = dataToShow;
+            dgvToShow.DataSource = bs;
 
-            dgvToShow.Update();
             dgvToShow.AutoResizeColumns();
         }
 

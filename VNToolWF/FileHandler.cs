@@ -15,18 +15,12 @@ namespace VNToolWF
         private readonly float marginOfErrorInPercentage = 0.08f;
         private readonly int maximumRunningThread = 10;
         private string folderPath = "";
-        private List<Thread> threads;
         public List<FileItem> DuplicatedItems;
         public Queue<int> DuplicatedGroups;
         public List<FileItem> SimilarImages;
 
         public Action OnFindAllDuplicatedFinished;
         public Action OnFindAllSimilarFinished;
-
-        public FileHandler()
-        {
-            threads = new List<Thread>(maximumRunningThread);
-        }
 
         public void ProcessFolder(string folderPath = "")
         {
@@ -104,22 +98,16 @@ namespace VNToolWF
         {
             SimilarImages = new List<FileItem>();
 
-            ProcessSimilarImagesMethod(filePaths);
-            OnFindAllSimilarFinished?.Invoke();
+            //ProcessSimilarImagesMethod(filePaths);
+            //OnFindAllSimilarFinished?.Invoke();
 
 
-            //List<List<List<string>>> pathsForMultiThreading = ProcessSameRatioImages(filePaths);
+            List<List<List<string>>> pathsForMultiThreading = ProcessSameRatioImages(filePaths);
 
-            //foreach (var multiPaths in pathsForMultiThreading)
-            //{
-            //    threads.Add(new Thread(() =>
-            //    {
-            //            ThreadProcessSimilarImages(multiPaths);
-            //            OnFindAllSimilarFinished?.Invoke();
-            //    }));
-            //}
-
-            //RunAllThread();
+            foreach (var multiPaths in pathsForMultiThreading)
+            {
+                ThreadProcessSimilarImages(multiPaths);
+            }
         }
 
         private List<List<List<string>>> ProcessSameRatioImages(List<string> filePaths)
@@ -159,20 +147,21 @@ namespace VNToolWF
             return pathsForMultiThreading;
         }
 
-        private void RunAllThread()
+        private async void ThreadProcessSimilarImages(List<List<string>> multiPaths)
         {
-            foreach (var thread in threads)
-            {
-                thread?.Start();
-            }
-        }
+            Task task = new Task(
+                () =>
+                {
+                    foreach (var paths in multiPaths)
+                    {
+                        ProcessSimilarImagesMethod(paths);
+                    }
+                }
+            );
+            task.Start();
+            task.Wait();
 
-        private void ThreadProcessSimilarImages(List<List<string>> multiPaths)
-        {
-            foreach (var paths in multiPaths)
-            {
-                ProcessSimilarImagesMethod(paths);
-            }
+            OnFindAllSimilarFinished?.Invoke();
         }
 
         private void ProcessSimilarImagesMethod(List<string> filePaths)
