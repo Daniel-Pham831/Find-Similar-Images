@@ -70,7 +70,7 @@ namespace VNToolWF
             using (Image imgA = Image.FromFile(pathImgA))
             using (Image imgB = Image.FromFile(pathImgB))
             {
-               result = imgA.Width > imgB.Width;
+                result = imgA.Width > imgB.Width;
             }
 
             return result;
@@ -100,5 +100,21 @@ namespace VNToolWF
 
             return totalPixel;
         }
+
+        public static bool AreTheySimilar(string imgAPath, string imgBPath)
+        {
+            string bigImg = IsABiggerThanB(imgAPath, imgBPath) ? imgAPath : imgBPath;
+            string smallImg = IsABiggerThanB(imgAPath, imgBPath) ? imgBPath : imgAPath;
+
+            string resizedImagePath = ResizeWithMagick(bigImg, smallImg);
+            double result = CompareWithMagick(resizedImagePath, smallImg);
+            bool areTheySimilar = result / GetTotalPixel(resizedImagePath) <= marginOfErrorInPercentage;
+
+            // Delete the resizedImage
+            File.Delete(resizedImagePath);
+
+            return areTheySimilar;
+        }
     }
 }
+

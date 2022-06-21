@@ -12,18 +12,21 @@ namespace VNToolWF
     public class FileHandler
     {
         private readonly string processType = "*.png";
-        private readonly float marginOfErrorInPercentage = 0.08f;
-        private readonly int maximumRunningThread = 10;
         private string folderPath = "";
         public List<FileItem> DuplicatedItems;
         public Queue<int> DuplicatedGroups;
         public List<FileItem> SimilarImages;
+        
 
         public Action OnFindAllDuplicatedFinished;
+        public Action OnNewSimilarAdded;
         public Action OnFindAllSimilarFinished;
+
+        private List<Task<bool>> tasks;
 
         public void ProcessFolder(string folderPath = "")
         {
+            tasks = new List<Task<bool>>();
             if (folderPath != "")
             {
                 this.folderPath = folderPath;
@@ -94,25 +97,28 @@ namespace VNToolWF
             }
         }
 
-        private void ProcessSimilarImages(List<string> filePaths)
+        private async void ProcessSimilarImages(List<string> filePaths)
         {
             SimilarImages = new List<FileItem>();
 
-            //ProcessSimilarImagesMethod(filePaths);
-            //OnFindAllSimilarFinished?.Invoke();
+            ThreadProcessSimilarImages(GetSameRatioImages(filePaths));
 
+            await AwaitAllTasks(tasks);
+            OnFindAllSimilarFinished?.Invoke();
+        }
 
-            List<List<List<string>>> pathsForMultiThreading = ProcessSameRatioImages(filePaths);
-
-            foreach (var multiPaths in pathsForMultiThreading)
+        private async Task AwaitAllTasks(List<Task<bool>> tasks)
+        {
+            while (tasks.Count > 0)
             {
-                ThreadProcessSimilarImages(multiPaths);
+                var t = await Task.WhenAny(tasks);
+                tasks.Remove(t);
             }
         }
 
-        private List<List<List<string>>> ProcessSameRatioImages(List<string> filePaths)
+        private List<List<string>> GetSameRatioImages(List<string> filePaths)
         {
-            Dictionary<float, List<string>> sameRatioImages = new Dictionary<float, List<string>>();
+            Dictionary<float, List<string>> sameRatioImagesDic = new Dictionary<float, List<string>>();
 
             foreach (var path in filePaths)
             {
@@ -120,75 +126,55 @@ namespace VNToolWF
                 {
                     float ratio = (float)Math.Round(img.Width * 1.0f / img.Height, 2);
 
-                    if (!sameRatioImages.ContainsKey(ratio))
+                    if (!sameRatioImagesDic.ContainsKey(ratio))
                     {
-                        sameRatioImages[ratio] = new List<string>();
+                        sameRatioImagesDic[ratio] = new List<string>();
                     }
 
-                    sameRatioImages[ratio].Add(path);
+                    sameRatioImagesDic[ratio].Add(path);
                 }
             }
 
-            List<List<List<string>>> pathsForMultiThreading = new List<List<List<string>>>();
-            int counter = 0;
-            foreach (var paths in sameRatioImages.Values)
+            List<List<string>> sameRatioImages = new List<List<string>>();
+            foreach (var paths in sameRatioImagesDic.Values)
             {
                 if (paths.Count > 1)
                 {
-                    if(pathsForMultiThreading.Count < maximumRunningThread)
-                        pathsForMultiThreading.Add(new List<List<string>>());
-
-                    pathsForMultiThreading[counter].Add(paths);
-
-                    counter = (counter + 1) % maximumRunningThread;
+                    sameRatioImages.Add(paths);
                 }
             }
 
-            return pathsForMultiThreading;
+            return sameRatioImages;
         }
 
-        private async void ThreadProcessSimilarImages(List<List<string>> multiPaths)
+        private void ThreadProcessSimilarImages(List<List<string>> multiPaths)
         {
-            Task task = new Task(
-                () =>
-                {
-                    foreach (var paths in multiPaths)
-                    {
-                        ProcessSimilarImagesMethod(paths);
-                    }
-                }
-            );
-            task.Start();
-            task.Wait();
-
-            OnFindAllSimilarFinished?.Invoke();
+            foreach (var paths in multiPaths)
+            {
+                ProcessSimilarRatioImages(paths);
+            }
         }
 
-        private void ProcessSimilarImagesMethod(List<string> filePaths)
+        private async void ProcessSimilarRatioImages(List<string> filePaths)
         {
             for (int i = 0; i < filePaths.Count - 1; i++)
             {
                 for (int j = i + 1; j < filePaths.Count; j++)
                 {
-                    if (ImageHandler.IsSameRatioWithMarginOfError(filePaths[i], filePaths[j], marginOfErrorInPercentage))
+                    Task<bool> task = new Task<bool>(() => ImageHandler.AreTheySimilar(filePaths[i], filePaths[j]));
+                    task.Start();
+                    tasks.Add(task);
+
+                    bool areTheySimilar = await task;
+
+                    if (areTheySimilar)
                     {
-                        // Find which imageIndex is smaller
-                        int bigImgIndex = ImageHandler.IsABiggerThanB(filePaths[i], filePaths[j]) ? i : j;
-                        int smallImgIndex = ImageHandler.IsABiggerThanB(filePaths[i], filePaths[j]) ? j : i;
+                        SimilarImages.Add(new FileItem(filePaths[i]));
+                        SimilarImages.Add(new FileItem(filePaths[j]));
 
-                        string resizedImagePath = ImageHandler.ResizeWithMagick(filePaths[bigImgIndex], filePaths[smallImgIndex]);
-                        double result = ImageHandler.CompareWithMagick(resizedImagePath, filePaths[smallImgIndex]);
-                        bool areTheySimilar = result / ImageHandler.GetTotalPixel(resizedImagePath) <= marginOfErrorInPercentage;
-
-                        if (areTheySimilar)
-                        {
-                            SimilarImages.Add(new FileItem(filePaths[i]));
-                            SimilarImages.Add(new FileItem(filePaths[j]));
-                        }
-
-                        // Delete the resizedImage
-                        File.Delete(resizedImagePath);
+                        OnNewSimilarAdded?.Invoke();
                     }
+
                 }
             }
         }

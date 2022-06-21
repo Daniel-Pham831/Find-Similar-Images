@@ -30,12 +30,14 @@
         {
             this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.labProcess = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dgvSimilar = new System.Windows.Forms.DataGridView();
             this.btnOpenDialog = new System.Windows.Forms.Button();
             this.dgvDuplicated = new System.Windows.Forms.DataGridView();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.labProcess = new System.Windows.Forms.Label();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.labReadme = new System.Windows.Forms.Label();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -44,10 +46,11 @@
             this.pathDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sizeInKiloByteDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimilar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDuplicated)).BeginInit();
-            this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fileItemBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -55,16 +58,39 @@
             // 
             this.groupBox1.AutoSize = true;
             this.groupBox1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox1.Controls.Add(this.groupBox4);
             this.groupBox1.Controls.Add(this.groupBox3);
             this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Controls.Add(this.btnOpenDialog);
             this.groupBox1.Controls.Add(this.dgvDuplicated);
-            this.groupBox1.Location = new System.Drawing.Point(0, 3);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(897, 698);
+            this.groupBox1.Size = new System.Drawing.Size(890, 690);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Files with duplicated name";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.labProcess);
+            this.groupBox3.Location = new System.Drawing.Point(691, 333);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(194, 83);
+            this.groupBox3.TabIndex = 3;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Status";
+            // 
+            // labProcess
+            // 
+            this.labProcess.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labProcess.Font = new System.Drawing.Font("Microsoft Sans Serif", 18.25F);
+            this.labProcess.Location = new System.Drawing.Point(3, 16);
+            this.labProcess.Name = "labProcess";
+            this.labProcess.Size = new System.Drawing.Size(188, 64);
+            this.labProcess.TabIndex = 0;
+            this.labProcess.Text = "Processing...";
+            this.labProcess.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // groupBox2
             // 
@@ -107,7 +133,7 @@
             this.btnOpenDialog.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnOpenDialog.Location = new System.Drawing.Point(688, 19);
             this.btnOpenDialog.Name = "btnOpenDialog";
-            this.btnOpenDialog.Size = new System.Drawing.Size(184, 39);
+            this.btnOpenDialog.Size = new System.Drawing.Size(197, 39);
             this.btnOpenDialog.TabIndex = 1;
             this.btnOpenDialog.Text = "Open Folder";
             this.btnOpenDialog.UseVisualStyleBackColor = true;
@@ -136,26 +162,24 @@
             this.dgvDuplicated.TabIndex = 0;
             this.dgvDuplicated.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvTable_KeyDown);
             // 
-            // groupBox3
+            // groupBox4
             // 
-            this.groupBox3.Controls.Add(this.labProcess);
-            this.groupBox3.Location = new System.Drawing.Point(691, 333);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(200, 64);
-            this.groupBox3.TabIndex = 3;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Status";
+            this.groupBox4.Controls.Add(this.labReadme);
+            this.groupBox4.Location = new System.Drawing.Point(691, 64);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(194, 263);
+            this.groupBox4.TabIndex = 4;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Readme";
             // 
-            // labProcess
+            // labReadme
             // 
-            this.labProcess.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.labProcess.Font = new System.Drawing.Font("Microsoft Sans Serif", 18.25F);
-            this.labProcess.Location = new System.Drawing.Point(3, 16);
-            this.labProcess.Name = "labProcess";
-            this.labProcess.Size = new System.Drawing.Size(194, 45);
-            this.labProcess.TabIndex = 0;
-            this.labProcess.Text = "Processing...";
-            this.labProcess.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labReadme.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.labReadme.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.labReadme.Location = new System.Drawing.Point(3, 16);
+            this.labReadme.Name = "labReadme";
+            this.labReadme.Size = new System.Drawing.Size(188, 244);
+            this.labReadme.TabIndex = 0;
             // 
             // dataGridViewTextBoxColumn1
             // 
@@ -217,10 +241,11 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimilar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDuplicated)).EndInit();
-            this.groupBox3.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.fileItemBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -243,6 +268,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label labProcess;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Label labReadme;
     }
 }
 

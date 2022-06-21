@@ -16,6 +16,10 @@ namespace VNToolWF
 {
     public partial class Form1 : Form
     {
+        private readonly string readmeText = "Choose the correct Resource Folder." +
+            "\n\nCtrl + Click or Shift + Click to select multiple files." +
+            "\n\n\"Enter\" to open WinMerge Compare (maximum 3 images)." +
+            "\n\n\"Delete\" to delete seleted images.";
         public FileHandler fileHandler;
         private Color color1 = Color.White;
         private Color color2 = Color.LightBlue;
@@ -30,8 +34,23 @@ namespace VNToolWF
         {
             fileHandler = new FileHandler();
             fileHandler.OnFindAllDuplicatedFinished += ShowDuplicatedDGV;
-            fileHandler.OnFindAllSimilarFinished += ShowSimilarDGV;
-            labProcess.Text = "";
+            fileHandler.OnNewSimilarAdded += ShowSimilarDGV;
+            fileHandler.OnFindAllSimilarFinished += OnProcessSimilarImagesCompleted;
+            SetLabelText(ref labProcess,"");
+            SetLabelText(ref labReadme, readmeText);
+        }
+
+        private void OnProcessSimilarImagesCompleted()
+        {
+            Invoke((Action)delegate {
+                SetLabelText(ref labProcess, "Done!");
+            });
+        }
+
+        private void SetLabelText(ref Label label,string text)
+        {
+            label.Text = text;
+            label.Refresh();
         }
 
         private void ShowSimilarDGV()
@@ -59,6 +78,7 @@ namespace VNToolWF
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
                     path = dialog.FileName;
+                    SetLabelText(ref labProcess, "Processing...");
                     fileHandler.ProcessFolder(path);
                 }
             }
@@ -126,7 +146,7 @@ namespace VNToolWF
                         DialogResult d = MessageBox.Show("Are you sure that you want to delete these?", "Are you sure?", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
                         if (d == DialogResult.Yes)
                         {
-                            DeleteSeletedRow(dgv);
+                            DeleteSeletedRow(ref dgv);
                         }
                     }
                     break;
@@ -143,7 +163,7 @@ namespace VNToolWF
             }
         }
 
-        private void DeleteSeletedRow(DataGridView dgv)
+        private void DeleteSeletedRow(ref DataGridView dgv)
         {
             List<FileItem> selectedFileItems = GetAllSelectedFileItems(dgv);
 
@@ -154,7 +174,10 @@ namespace VNToolWF
                 File.Delete(path);
             }
 
-            fileHandler.ProcessFolder();
+            foreach (DataGridViewRow item in dgv.SelectedRows)
+            {
+                dgv.Rows.RemoveAt(item.Index);
+            }
         }
 
         private List<FileItem> GetAllSelectedFileItems(DataGridView dgv)
