@@ -24,7 +24,6 @@ namespace VNToolWF
         private Color color1 = Color.White;
         private Color color2 = Color.LightBlue;
 
-
         public Form1()
         {
             InitializeComponent();
@@ -124,13 +123,13 @@ namespace VNToolWF
                 DataGridViewRow row = dgvSimilar.Rows[i];
                 row.DefaultCellStyle.BackColor = shouldChangeColor ? color1 : color2;
             }
-
         }
 
         private void dgvTable_KeyDown(object sender, KeyEventArgs e)
         {
             HandleKeyEvents(dgvDuplicated, e);
         }
+
         private void dgvSimilar_KeyDown(object sender, KeyEventArgs e)
         {
             HandleKeyEvents(dgvSimilar, e);

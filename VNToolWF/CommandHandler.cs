@@ -11,6 +11,7 @@ namespace VNToolWF
 {
     public class CommandHandler
     {
+        // should add environment variable here
         public static string winMergePath = @"C:\Program Files (x86)\WinMerge\WinMergeU.exe";
 
         public static void ExecuteWinMergeCommand(List<string> arguments)
@@ -23,7 +24,6 @@ namespace VNToolWF
             }
 
             string command = winMerge + " " + paths;
-
             ExecuteCommand(command);
         }
 
@@ -39,7 +39,6 @@ namespace VNToolWF
             startInfo.Arguments = command;
             process.StartInfo = startInfo;
             process.Start();
-
             process.WaitForExit();
         }
 

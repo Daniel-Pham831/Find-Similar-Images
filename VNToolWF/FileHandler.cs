@@ -174,7 +174,6 @@ namespace VNToolWF
 
                         OnNewSimilarAdded?.Invoke();
                     }
-
                 }
             }
         }
