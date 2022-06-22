@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.WindowsAPICodePack.Dialogs;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace VNToolWF
 {
@@ -23,6 +25,47 @@ namespace VNToolWF
         public Action OnFindAllSimilarFinished;
 
         private List<Task<bool>> tasks;
+
+        public FileHandler()
+        {
+            if (!HasWinMergeAsEnvironmentVariable())
+            {
+                DialogResult dr = MessageBox.Show("Cannot find WinMerge. Please select the Winmerge application path.", "Warning!!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                if (dr == DialogResult.OK)
+                    SetWinMergeEnvironmentVariable();
+            }
+        }
+
+        private void SetWinMergeEnvironmentVariable()
+        {
+            using (CommonOpenFileDialog dialog = new CommonOpenFileDialog())
+            {
+                if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+                {
+                    string path = dialog.FileName;
+                    string fileName = Path.GetFileName(path);
+                    if (fileName != CommandHandler.WinMerge)
+                    {
+                        MessageBox.Show("This is not WinMerge. Please goes here https://winmerge.org/ and install it", "Error!!",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                        Application.Exit();
+                    }
+
+                    path = $"{path.Replace("\\" + fileName, "")}";
+
+                    var name = "PATH";
+                    var scope = EnvironmentVariableTarget.User; // or User
+                    var oldValue = Environment.GetEnvironmentVariable(name, scope);
+                    Environment.SetEnvironmentVariable(name, oldValue + @";" + path, scope);
+                }
+            }
+        }
+
+        private bool HasWinMergeAsEnvironmentVariable()
+        {
+            string value = Environment.GetEnvironmentVariable("PATH",EnvironmentVariableTarget.User);
+
+            return value.IndexOf("WinMerge") != -1;
+        }
 
         public void ProcessFolder(string folderPath = "")
         {
