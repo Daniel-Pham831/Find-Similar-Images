@@ -1,4 +1,4 @@
-This application is responsible for images which are similar or having the same name.
+This application is responsible for finding images which are similar or having the same name.
 <br/>This application is made for Window 10.
 <br/>Before running the application, we need to install WinMerge (WinMerge is an application to compare the different between images). You can go here https://winmerge.org/
 <br/>Run VNToolWF.exe to run the application.
