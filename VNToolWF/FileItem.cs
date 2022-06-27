@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,19 @@ namespace VNToolWF
             {
                 return $"{size / 1024} KB";
             } 
+        }
+
+        public string dimensions {
+            get
+            {
+                string imgDimensions = "{0}x{1}";
+                using (Image img = Image.FromFile(path))
+                {
+                    imgDimensions = String.Format(imgDimensions, img.Width, img.Height);
+                }
+
+                return imgDimensions;
+            }
         }
 
         public FileItem(string fullPath)
@@ -40,4 +54,6 @@ namespace VNToolWF
             return paths;
         }
     }
+
+
 }

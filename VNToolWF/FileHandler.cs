@@ -14,6 +14,7 @@ namespace VNToolWF
     public class FileHandler
     {
         private readonly string processType = "*.png";
+        private readonly int minWarningSize = 500;
         private string folderPath = "";
 
         public List<FileItem> DuplicatedItems;
@@ -22,9 +23,14 @@ namespace VNToolWF
         public List<FileItem> SimilarImages;
         public List<List<string>> SimilarGroups;
 
+        public List<FileItem> LargeItems;
+        public List<List<string>> LargeGroups;
+
         public Action OnFindAllDuplicatedFinished;
         public Action OnNewSimilarAdded;
         public Action OnFindAllSimilarFinished;
+        public Action OnFindAllLargeImagesFinished;
+        
 
         private List<Task<bool>> tasks;
 
@@ -82,6 +88,7 @@ namespace VNToolWF
             }
             List<string> filePaths = Directory.GetFiles(folderPath, processType, SearchOption.AllDirectories).ToList();
 
+            ProcessLargeImages(filePaths);
             ProcessDuplicateNames(filePaths);
             ProcessSimilarImages(RemoveDuplicateNames(filePaths));
         }
@@ -96,6 +103,29 @@ namespace VNToolWF
             }
 
             return filePaths;
+        }
+
+        private void ProcessLargeImages(List<string> filePaths)
+        {
+            LargeGroups = new List<List<string>>();
+            LargeItems = new List<FileItem>();
+
+            foreach (string filePath in filePaths)
+            {
+                using (Image img = Image.FromFile(filePath))
+                {
+                    if(img.Width >= minWarningSize || img.Height >= minWarningSize)
+                    {
+                        FileItem newFileItem = new FileItem(filePath);
+                        newFileItem.groupIndex = LargeGroups.Count;
+                        LargeItems.Add(newFileItem);
+
+                        LargeGroups.Add(new List<string>() { filePath });
+                    }
+                }
+            }
+
+            OnFindAllLargeImagesFinished?.Invoke();
         }
 
         private void ProcessDuplicateNames(List<string> filePaths)

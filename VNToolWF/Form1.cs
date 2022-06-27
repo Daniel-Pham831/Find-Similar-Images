@@ -33,10 +33,17 @@ namespace VNToolWF
         {
             fileHandler = new FileHandler();
             fileHandler.OnFindAllDuplicatedFinished += ShowDuplicatedDGV;
+            fileHandler.OnFindAllLargeImagesFinished += ShowLargeImagesDGV;
             fileHandler.OnNewSimilarAdded += ShowSimilarDGV;
             fileHandler.OnFindAllSimilarFinished += OnProcessSimilarImagesCompleted;
             SetLabelText(ref labProcess,"");
             SetLabelText(ref labReadme, readmeText);
+        }
+
+        private void ShowLargeImagesDGV()
+        {
+            ShowDataGridView(ref dgvLarge, fileHandler.LargeItems);
+            ChangeDGVGroupColor(ref dgvLarge);
         }
 
         private void OnProcessSimilarImagesCompleted()
@@ -89,6 +96,7 @@ namespace VNToolWF
             dgvToShow.DataSource = bs;
 
             dgvToShow.AutoResizeColumns();
+            dgvToShow.ClearSelection();
         }
 
         private void ChangeDGVGroupColor(ref DataGridView dgv)
@@ -120,6 +128,11 @@ namespace VNToolWF
         private void dgvSimilar_KeyDown(object sender, KeyEventArgs e)
         {
             HandleKeyEvents(dgvSimilar, e);
+        }
+
+        private void dgvLarge_KeyDown(object sender, KeyEventArgs e)
+        {
+            HandleKeyEvents(dgvLarge, e);
         }
 
         private void HandleKeyEvents(DataGridView dgv, KeyEventArgs e)
@@ -192,12 +205,23 @@ namespace VNToolWF
         {
             OnDGVDoubleClicked(sender as DataGridView, e.RowIndex, fileHandler.SimilarGroups);
         }
+        private void dgvLarge_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            OnDGVDoubleClicked(sender as DataGridView, e.RowIndex, fileHandler.LargeGroups);
+        }
 
         private void OnDGVDoubleClicked(DataGridView dgv,int rowIndex,List<List<string>> itemGroups)
         {
             FileItem fileItem = dgv.Rows[rowIndex].DataBoundItem as FileItem;
 
             CommandHandler.ExecuteWinMergeCommand(itemGroups[fileItem.groupIndex]);
+        }
+
+        private void Form1_Click(object sender, EventArgs e)
+        {
+            dgvDuplicated.ClearSelection();
+            dgvSimilar.ClearSelection();
+            dgvLarge.ClearSelection();
         }
     }
 }

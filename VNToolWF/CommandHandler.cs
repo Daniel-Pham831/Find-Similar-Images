@@ -15,6 +15,15 @@ namespace VNToolWF
 
         public static void ExecuteWinMergeCommand(List<string> arguments)
         {
+            if(arguments.Count <= 1)
+            {
+                string imgPath = FormatToExcutableStringPath(arguments[0]);
+                Process.Start(imgPath);
+
+                return;
+            }
+
+
             string paths = "";
             foreach (var argument in arguments)
             {
