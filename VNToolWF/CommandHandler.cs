@@ -11,7 +11,6 @@ namespace VNToolWF
 {
     public class CommandHandler
     {
-        // should add environment variable here
         public static string WinMerge = "WinMergeU.exe";
 
         public static void ExecuteWinMergeCommand(List<string> arguments)

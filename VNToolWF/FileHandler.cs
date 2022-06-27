@@ -15,10 +15,12 @@ namespace VNToolWF
     {
         private readonly string processType = "*.png";
         private string folderPath = "";
+
         public List<FileItem> DuplicatedItems;
-        public Queue<int> DuplicatedGroups;
+        public List<List<string>> DuplicatedGroups;
+
         public List<FileItem> SimilarImages;
-        
+        public List<List<string>> SimilarGroups;
 
         public Action OnFindAllDuplicatedFinished;
         public Action OnNewSimilarAdded;
@@ -99,9 +101,10 @@ namespace VNToolWF
         private void ProcessDuplicateNames(List<string> filePaths)
         {
             DuplicatedItems = new List<FileItem>();
-            DuplicatedGroups = new Queue<int>();
-            Dictionary<string, List<string>> duplicatedNames = ConvertAllFilesPathIntoDic(filePaths);
-            FilterDuplicatedFilesName(duplicatedNames);
+            DuplicatedGroups = new List<List<string>>();
+            
+            
+            FilterDuplicatedFilesName(ConvertAllFilesPathIntoDic(filePaths));
 
             OnFindAllDuplicatedFinished?.Invoke();
         }
@@ -126,16 +129,26 @@ namespace VNToolWF
 
         private void FilterDuplicatedFilesName(Dictionary<string, List<string>> duplicatedNames)
         {
+            int groupCounter = 0;
             foreach (string fileName in duplicatedNames.Keys)
             {
                 // Only add if there are duplicated files
                 if (duplicatedNames[fileName].Count > 1)
                 {
-                    DuplicatedGroups.Enqueue(duplicatedNames[fileName].Count);
+                    List<string> groupPaths = new List<string>();
+
                     foreach (string filePath in duplicatedNames[fileName])
                     {
-                        DuplicatedItems.Add(new FileItem(filePath));
+                        groupPaths.Add(filePath);
+
+                        FileItem newFileItem = new FileItem(filePath);
+                        newFileItem.groupIndex = groupCounter;
+
+                        DuplicatedItems.Add(newFileItem);
                     }
+
+                    DuplicatedGroups.Add(groupPaths);
+                    groupCounter++;
                 }
             }
         }
@@ -143,7 +156,7 @@ namespace VNToolWF
         private async void ProcessSimilarImages(List<string> filePaths)
         {
             SimilarImages = new List<FileItem>();
-
+            SimilarGroups = new List<List<string>>();
             ThreadProcessSimilarImages(GetSameRatioImages(filePaths));
 
             await AwaitAllTasks(tasks);
@@ -212,8 +225,18 @@ namespace VNToolWF
 
                     if (areTheySimilar)
                     {
-                        SimilarImages.Add(new FileItem(filePaths[i]));
-                        SimilarImages.Add(new FileItem(filePaths[j]));
+                        List<string> similarPaths = new List<string>();
+                        similarPaths.Add(filePaths[i]);
+                        similarPaths.Add(filePaths[j]);
+                        
+                        foreach (var path in similarPaths)
+                        {
+                            FileItem newFileItem = new FileItem(path);
+                            newFileItem.groupIndex = SimilarGroups.Count;
+                            SimilarImages.Add(newFileItem);
+                        }
+
+                        SimilarGroups.Add(similarPaths);
 
                         OnNewSimilarAdded?.Invoke();
                     }

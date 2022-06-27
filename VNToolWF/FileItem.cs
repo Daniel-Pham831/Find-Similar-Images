@@ -9,6 +9,7 @@ namespace VNToolWF
 {
     public class FileItem
     {
+        public int groupIndex { get; set; }
         public string name { get; set; }
         public string path { get; set; }
         public string sizeInKiloByte { 

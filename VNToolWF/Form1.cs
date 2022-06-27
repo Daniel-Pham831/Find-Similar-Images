@@ -22,7 +22,7 @@ namespace VNToolWF
             "\n\n\"Delete\" to delete seleted images.";
         public FileHandler fileHandler;
         private Color color1 = Color.White;
-        private Color color2 = Color.LightBlue;
+        private Color color2 = Color.MediumAquamarine;
 
         public Form1()
         {
@@ -56,15 +56,14 @@ namespace VNToolWF
         {
             Invoke((Action)delegate {
                 ShowDataGridView(ref dgvSimilar, fileHandler.SimilarImages);
-                ChangeSimilarDGVRowsColor(ref dgvSimilar);
+                ChangeDGVGroupColor(ref dgvSimilar);
             });
         }
-
 
         private void ShowDuplicatedDGV()
         {
             ShowDataGridView(ref dgvDuplicated, fileHandler.DuplicatedItems);
-            ChangeDuplicatedDGVRowsColor(ref dgvDuplicated, fileHandler.DuplicatedGroups);
+            ChangeDGVGroupColor(ref dgvDuplicated);
         }
 
         private void btnOpenDialog_MouseClick(object sender, MouseEventArgs e)
@@ -92,37 +91,25 @@ namespace VNToolWF
             dgvToShow.AutoResizeColumns();
         }
 
-        private void ChangeDuplicatedDGVRowsColor(ref DataGridView dgv,Queue<int> duplicatedGroup)
+        private void ChangeDGVGroupColor(ref DataGridView dgv)
         {
-            int rowCounter = 0;
-            bool shouldChangeColor = true;
-            while (duplicatedGroup.Count != 0)
+            int currentGroupIndex = -1;
+            bool shouldChangeColor = false;
+
+            foreach (DataGridViewRow row in dgv.Rows)
             {
-                int numOfItemPerGroup = duplicatedGroup.Dequeue();
-                for (int i = 0; i < numOfItemPerGroup; i++)
+                FileItem currentFileItem = row.DataBoundItem as FileItem;
+                if(currentGroupIndex != currentFileItem.groupIndex)
                 {
-                    DataGridViewRow row = dgv.Rows[rowCounter++];
-                    row.DefaultCellStyle.BackColor = shouldChangeColor ? color1 : color2;
+                    shouldChangeColor = !shouldChangeColor;
+                    currentGroupIndex = currentFileItem.groupIndex;
                 }
 
-                shouldChangeColor = !shouldChangeColor;
+                row.DefaultCellStyle.BackColor = shouldChangeColor ? color1 : color2;
             }
 
             dgv.Refresh();
             dgv.AutoResizeColumns();
-        }
-
-        private void ChangeSimilarDGVRowsColor(ref DataGridView dgvSimilar)
-        {
-            bool shouldChangeColor = false;
-            for (int i = 0; i < dgvSimilar.Rows.Count; i++)
-            {
-                if (i % 2 == 0)
-                    shouldChangeColor = !shouldChangeColor;
-
-                DataGridViewRow row = dgvSimilar.Rows[i];
-                row.DefaultCellStyle.BackColor = shouldChangeColor ? color1 : color2;
-            }
         }
 
         private void dgvTable_KeyDown(object sender, KeyEventArgs e)
@@ -194,6 +181,23 @@ namespace VNToolWF
         private bool IsAnyRowSeleted(DataGridView dgv)
         {
             return dgv.SelectedRows.Count != 0;
+        }
+
+        private void dgvDuplicated_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            OnDGVDoubleClicked(sender as DataGridView, e.RowIndex, fileHandler.DuplicatedGroups);
+        }
+
+        private void dgvSimilar_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            OnDGVDoubleClicked(sender as DataGridView, e.RowIndex, fileHandler.SimilarGroups);
+        }
+
+        private void OnDGVDoubleClicked(DataGridView dgv,int rowIndex,List<List<string>> itemGroups)
+        {
+            FileItem fileItem = dgv.Rows[rowIndex].DataBoundItem as FileItem;
+
+            CommandHandler.ExecuteWinMergeCommand(itemGroups[fileItem.groupIndex]);
         }
     }
 }
