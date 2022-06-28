@@ -19,10 +19,13 @@ namespace VNToolWF
         private readonly string readmeText = "Choose the correct Resource Folder." +
             "\n\nCtrl + Click or Shift + Click to select multiple files." +
             "\n\n\"Enter\" to open WinMerge Compare (maximum 3 images)." +
-            "\n\n\"Delete\" to delete seleted images.";
+            "\n\n\"Delete\" to delete seleted images." +
+            "\n\nRight click to ignore the folder path." +
+            "\n\nOpen dirIgnore.txt if you want to modify ignore by yourself.";
         public FileHandler fileHandler;
         private Color color1 = Color.White;
         private Color color2 = Color.CadetBlue;
+        private FileItem currentSelectedData;
 
         public Form1()
         {
@@ -38,12 +41,13 @@ namespace VNToolWF
             fileHandler.OnFindAllSimilarFinished += OnProcessSimilarImagesCompleted;
             SetLabelText(ref labProcess,"");
             SetLabelText(ref labReadme, readmeText);
+
+            currentSelectedData = null;
         }
 
         private void ShowLargeImagesDGV()
         {
             ShowDataGridView(ref dgvLarge, fileHandler.LargeItems);
-            ChangeDGVGroupColor(ref dgvLarge);
         }
 
         private void OnProcessSimilarImagesCompleted()
@@ -222,6 +226,35 @@ namespace VNToolWF
             dgvDuplicated.ClearSelection();
             dgvSimilar.ClearSelection();
             dgvLarge.ClearSelection();
+        }
+
+        private void dgv_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                showcmsIgnoreOnDVG(sender as DataGridView, e);
+            }
+        }
+
+        private void showcmsIgnoreOnDVG(DataGridView dgv,MouseEventArgs e)
+        {
+            currentSelectedData = null;
+
+            var hti = dgv.HitTest(e.X, e.Y);
+
+            if (hti.RowIndex != -1)
+            {
+                dgv.ClearSelection();
+                dgv.Rows[hti.RowIndex].Selected = true;
+                dgv.CurrentCell = dgv.Rows[hti.RowIndex].Cells[0];
+                currentSelectedData = dgv.Rows[hti.RowIndex].DataBoundItem as FileItem;
+                cmsIgnore.Show(dgv, new Point(e.X, e.Y));
+            }
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            fileHandler.IgnoreFolder(currentSelectedData.path);
         }
     }
 }

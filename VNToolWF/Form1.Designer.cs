@@ -31,17 +31,19 @@
             this.components = new System.ComponentModel.Container();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dgvDuplicated = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.labReadme = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.labProcess = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dgvSimilar = new System.Windows.Forms.DataGridView();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnOpenDialog = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.dgvLarge = new System.Windows.Forms.DataGridView();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cmsIgnore = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.nameDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupIndexDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sizeInKiloByteDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -61,6 +63,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimilar)).BeginInit();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLarge)).BeginInit();
+            this.cmsIgnore.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fileItemBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -100,13 +103,21 @@
             this.dgvDuplicated.TabIndex = 0;
             this.dgvDuplicated.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDuplicated_CellDoubleClick);
             this.dgvDuplicated.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvTable_KeyDown);
+            this.dgvDuplicated.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgv_MouseClick);
+            // 
+            // Column1
+            // 
+            this.Column1.DataPropertyName = "groupIndex";
+            this.Column1.HeaderText = "Group Index";
+            this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
             // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.labReadme);
             this.groupBox4.Location = new System.Drawing.Point(697, 146);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(194, 298);
+            this.groupBox4.Size = new System.Drawing.Size(194, 372);
             this.groupBox4.TabIndex = 4;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Readme";
@@ -117,7 +128,7 @@
             this.labReadme.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.labReadme.Location = new System.Drawing.Point(3, 16);
             this.labReadme.Name = "labReadme";
-            this.labReadme.Size = new System.Drawing.Size(188, 279);
+            this.labReadme.Size = new System.Drawing.Size(188, 353);
             this.labReadme.TabIndex = 0;
             // 
             // groupBox3
@@ -178,6 +189,14 @@
             this.dgvSimilar.TabIndex = 0;
             this.dgvSimilar.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSimilar_CellDoubleClick);
             this.dgvSimilar.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvSimilar_KeyDown);
+            this.dgvSimilar.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgv_MouseClick);
+            // 
+            // Column2
+            // 
+            this.Column2.DataPropertyName = "groupIndex";
+            this.Column2.HeaderText = "Group Index";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
             // 
             // btnOpenDialog
             // 
@@ -227,20 +246,21 @@
             this.dgvLarge.TabIndex = 0;
             this.dgvLarge.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvLarge_CellDoubleClick);
             this.dgvLarge.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvLarge_KeyDown);
+            this.dgvLarge.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgv_MouseClick);
             // 
-            // Column2
+            // cmsIgnore
             // 
-            this.Column2.DataPropertyName = "groupIndex";
-            this.Column2.HeaderText = "Group Index";
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
+            this.cmsIgnore.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1});
+            this.cmsIgnore.Name = "cmsIgnore";
+            this.cmsIgnore.Size = new System.Drawing.Size(143, 26);
             // 
-            // Column1
+            // toolStripMenuItem1
             // 
-            this.Column1.DataPropertyName = "groupIndex";
-            this.Column1.HeaderText = "Group Index";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(142, 22);
+            this.toolStripMenuItem1.Text = "Ignore folder";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // nameDataGridViewTextBoxColumn1
             // 
@@ -345,6 +365,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvSimilar)).EndInit();
             this.groupBox5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvLarge)).EndInit();
+            this.cmsIgnore.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.fileItemBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -377,6 +398,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn groupIndexDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn sizeInKiloByteDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn pathDataGridViewTextBoxColumn1;
+        private System.Windows.Forms.ContextMenuStrip cmsIgnore;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
     }
 }
 

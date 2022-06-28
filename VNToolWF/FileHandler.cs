@@ -14,8 +14,10 @@ namespace VNToolWF
     public class FileHandler
     {
         private readonly string processType = "*.png";
+        private readonly string dirIgnoreFile = "dirIgnore.txt";
         private readonly int minWarningSize = 500;
         private string folderPath = "";
+        private string ignoreFilePath;
 
         public List<FileItem> DuplicatedItems;
         public List<List<string>> DuplicatedGroups;
@@ -30,8 +32,8 @@ namespace VNToolWF
         public Action OnNewSimilarAdded;
         public Action OnFindAllSimilarFinished;
         public Action OnFindAllLargeImagesFinished;
-        
 
+        private List<string> dirIgnore;
         private List<Task<bool>> tasks;
 
         public FileHandler()
@@ -42,6 +44,8 @@ namespace VNToolWF
                 if (dr == DialogResult.OK)
                     SetWinMergeEnvironmentVariable();
             }
+
+            LoadDirIgnore();
         }
 
         private void SetWinMergeEnvironmentVariable()
@@ -75,6 +79,61 @@ namespace VNToolWF
             return value.IndexOf("WinMerge") != -1;
         }
 
+        private void LoadDirIgnore()
+        {
+            dirIgnore = new List<string>();
+            ignoreFilePath = "";
+
+            string currentDir = Directory.GetCurrentDirectory();
+            ignoreFilePath = Path.Combine(currentDir, dirIgnoreFile);
+
+            if (File.Exists(ignoreFilePath))
+            {
+                dirIgnore = File.ReadAllLines(ignoreFilePath).ToList();
+            }
+            else
+            {
+                File.CreateText(ignoreFilePath);
+            }
+        }
+
+        public void IgnoreFolder(string path)
+        {
+            string name = Path.GetFileName(path);
+            string reducePath = path.Replace("\\" + name, "");
+            if (dirIgnore.IndexOf(reducePath) != -1)
+                return;
+
+            dirIgnore.Add(reducePath);
+            using (StreamWriter outputFile = new StreamWriter(ignoreFilePath))
+            {
+                foreach (string line in dirIgnore)
+                    outputFile.WriteLine(line);
+            }
+        }
+
+        private List<string> RemoveIgnoreFolder(List<string> filePaths)
+        {
+            List<string> result = new List<string>();
+            foreach (var path in filePaths)
+            {
+                result.Add(path);
+                foreach (var ignorePath in dirIgnore)
+                {
+                    if (ignorePath == "") continue;
+
+
+                    if (path.IndexOf(ignorePath) != -1)
+                    {
+                        result.Remove(path);
+                        break;
+                    }
+                }
+            }
+
+            return result;
+        }
+
         public void ProcessFolder(string folderPath = "")
         {
             tasks = new List<Task<bool>>();
@@ -87,6 +146,7 @@ namespace VNToolWF
                 folderPath = this.folderPath;
             }
             List<string> filePaths = Directory.GetFiles(folderPath, processType, SearchOption.AllDirectories).ToList();
+            filePaths = RemoveIgnoreFolder(filePaths);
 
             ProcessLargeImages(filePaths);
             ProcessDuplicateNames(filePaths);
