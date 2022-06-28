@@ -133,7 +133,6 @@ namespace VNToolWF
             DuplicatedItems = new List<FileItem>();
             DuplicatedGroups = new List<List<string>>();
             
-            
             FilterDuplicatedFilesName(ConvertAllFilesPathIntoDic(filePaths));
 
             OnFindAllDuplicatedFinished?.Invoke();
@@ -159,7 +158,6 @@ namespace VNToolWF
 
         private void FilterDuplicatedFilesName(Dictionary<string, List<string>> duplicatedNames)
         {
-            int groupCounter = 0;
             foreach (string fileName in duplicatedNames.Keys)
             {
                 // Only add if there are duplicated files
@@ -172,13 +170,12 @@ namespace VNToolWF
                         groupPaths.Add(filePath);
 
                         FileItem newFileItem = new FileItem(filePath);
-                        newFileItem.groupIndex = groupCounter;
+                        newFileItem.groupIndex = DuplicatedGroups.Count;
 
                         DuplicatedItems.Add(newFileItem);
                     }
 
                     DuplicatedGroups.Add(groupPaths);
-                    groupCounter++;
                 }
             }
         }

@@ -23,7 +23,6 @@ namespace VNToolWF
                 return;
             }
 
-
             string paths = "";
             foreach (var argument in arguments)
             {

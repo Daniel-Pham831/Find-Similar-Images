@@ -22,7 +22,7 @@ namespace VNToolWF
             "\n\n\"Delete\" to delete seleted images.";
         public FileHandler fileHandler;
         private Color color1 = Color.White;
-        private Color color2 = Color.MediumAquamarine;
+        private Color color2 = Color.CadetBlue;
 
         public Form1()
         {

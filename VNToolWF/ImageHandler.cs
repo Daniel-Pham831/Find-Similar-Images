@@ -104,7 +104,7 @@ namespace VNToolWF
         public static bool AreTheySimilar(string imgAPath, string imgBPath)
         {
             string bigImg = IsABiggerThanB(imgAPath, imgBPath) ? imgAPath : imgBPath;
-            string smallImg = IsABiggerThanB(imgAPath, imgBPath) ? imgBPath : imgAPath;
+            string smallImg = bigImg == imgAPath ? imgBPath : imgAPath;
 
             string resizedImagePath = ResizeWithMagick(bigImg, smallImg);
             double result = CompareWithMagick(resizedImagePath, smallImg);
