@@ -1,6 +1,6 @@
 ﻿namespace VNToolWF
 {
-    partial class Form1
+    partial class ArtExportChecker
     {
         /// <summary>
         /// Required designer variable.
@@ -44,6 +44,7 @@
             this.dgvLarge = new System.Windows.Forms.DataGridView();
             this.cmsIgnore = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnOpenResizer = new System.Windows.Forms.Button();
             this.nameDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupIndexDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sizeInKiloByteDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -86,6 +87,7 @@
             this.dgvDuplicated.AllowUserToResizeColumns = false;
             this.dgvDuplicated.AllowUserToResizeRows = false;
             this.dgvDuplicated.AutoGenerateColumns = false;
+            this.dgvDuplicated.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvDuplicated.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
             this.dgvDuplicated.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDuplicated.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -102,7 +104,7 @@
             this.dgvDuplicated.Size = new System.Drawing.Size(676, 251);
             this.dgvDuplicated.TabIndex = 0;
             this.dgvDuplicated.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDuplicated_CellDoubleClick);
-            this.dgvDuplicated.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvTable_KeyDown);
+            this.dgvDuplicated.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgv_KeyDown);
             this.dgvDuplicated.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgv_MouseClick);
             // 
             // Column1
@@ -111,6 +113,7 @@
             this.Column1.HeaderText = "Group Index";
             this.Column1.Name = "Column1";
             this.Column1.ReadOnly = true;
+            this.Column1.Width = 90;
             // 
             // groupBox4
             // 
@@ -172,6 +175,7 @@
             this.dgvSimilar.AllowUserToResizeColumns = false;
             this.dgvSimilar.AllowUserToResizeRows = false;
             this.dgvSimilar.AutoGenerateColumns = false;
+            this.dgvSimilar.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvSimilar.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
             this.dgvSimilar.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvSimilar.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -188,7 +192,7 @@
             this.dgvSimilar.Size = new System.Drawing.Size(676, 282);
             this.dgvSimilar.TabIndex = 0;
             this.dgvSimilar.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSimilar_CellDoubleClick);
-            this.dgvSimilar.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvSimilar_KeyDown);
+            this.dgvSimilar.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgv_KeyDown);
             this.dgvSimilar.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgv_MouseClick);
             // 
             // Column2
@@ -197,6 +201,7 @@
             this.Column2.HeaderText = "Group Index";
             this.Column2.Name = "Column2";
             this.Column2.ReadOnly = true;
+            this.Column2.Width = 90;
             // 
             // btnOpenDialog
             // 
@@ -229,6 +234,7 @@
             this.dgvLarge.AllowUserToResizeColumns = false;
             this.dgvLarge.AllowUserToResizeRows = false;
             this.dgvLarge.AutoGenerateColumns = false;
+            this.dgvLarge.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvLarge.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCells;
             this.dgvLarge.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvLarge.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -245,7 +251,7 @@
             this.dgvLarge.Size = new System.Drawing.Size(676, 282);
             this.dgvLarge.TabIndex = 0;
             this.dgvLarge.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvLarge_CellDoubleClick);
-            this.dgvLarge.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgvLarge_KeyDown);
+            this.dgvLarge.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgv_KeyDown);
             this.dgvLarge.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgv_MouseClick);
             // 
             // cmsIgnore
@@ -262,12 +268,24 @@
             this.toolStripMenuItem1.Text = "Ignore folder";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
+            // btnOpenResizer
+            // 
+            this.btnOpenResizer.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnOpenResizer.Location = new System.Drawing.Point(697, 592);
+            this.btnOpenResizer.Name = "btnOpenResizer";
+            this.btnOpenResizer.Size = new System.Drawing.Size(194, 39);
+            this.btnOpenResizer.TabIndex = 5;
+            this.btnOpenResizer.Text = "Open Image Resizer";
+            this.btnOpenResizer.UseVisualStyleBackColor = true;
+            this.btnOpenResizer.MouseClick += new System.Windows.Forms.MouseEventHandler(this.btnOpenResizer_MouseClick);
+            // 
             // nameDataGridViewTextBoxColumn1
             // 
             this.nameDataGridViewTextBoxColumn1.DataPropertyName = "name";
             this.nameDataGridViewTextBoxColumn1.HeaderText = "Name";
             this.nameDataGridViewTextBoxColumn1.Name = "nameDataGridViewTextBoxColumn1";
             this.nameDataGridViewTextBoxColumn1.ReadOnly = true;
+            this.nameDataGridViewTextBoxColumn1.Width = 60;
             // 
             // groupIndexDataGridViewTextBoxColumn
             // 
@@ -275,7 +293,7 @@
             this.groupIndexDataGridViewTextBoxColumn.HeaderText = "Dimensions (WxH)";
             this.groupIndexDataGridViewTextBoxColumn.Name = "groupIndexDataGridViewTextBoxColumn";
             this.groupIndexDataGridViewTextBoxColumn.ReadOnly = true;
-            this.groupIndexDataGridViewTextBoxColumn.Width = 130;
+            this.groupIndexDataGridViewTextBoxColumn.Width = 109;
             // 
             // sizeInKiloByteDataGridViewTextBoxColumn1
             // 
@@ -283,6 +301,7 @@
             this.sizeInKiloByteDataGridViewTextBoxColumn1.HeaderText = "Size (KB)";
             this.sizeInKiloByteDataGridViewTextBoxColumn1.Name = "sizeInKiloByteDataGridViewTextBoxColumn1";
             this.sizeInKiloByteDataGridViewTextBoxColumn1.ReadOnly = true;
+            this.sizeInKiloByteDataGridViewTextBoxColumn1.Width = 52;
             // 
             // pathDataGridViewTextBoxColumn1
             // 
@@ -290,6 +309,7 @@
             this.pathDataGridViewTextBoxColumn1.HeaderText = "Path";
             this.pathDataGridViewTextBoxColumn1.Name = "pathDataGridViewTextBoxColumn1";
             this.pathDataGridViewTextBoxColumn1.ReadOnly = true;
+            this.pathDataGridViewTextBoxColumn1.Width = 54;
             // 
             // fileItemBindingSource
             // 
@@ -301,6 +321,7 @@
             this.dataGridViewTextBoxColumn1.HeaderText = "Name";
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dataGridViewTextBoxColumn1.Width = 60;
             // 
             // dataGridViewTextBoxColumn2
             // 
@@ -308,6 +329,7 @@
             this.dataGridViewTextBoxColumn2.HeaderText = "Path";
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            this.dataGridViewTextBoxColumn2.Width = 54;
             // 
             // dataGridViewTextBoxColumn3
             // 
@@ -315,6 +337,7 @@
             this.dataGridViewTextBoxColumn3.HeaderText = "Size (KB)";
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            this.dataGridViewTextBoxColumn3.Width = 75;
             // 
             // nameDataGridViewTextBoxColumn
             // 
@@ -322,6 +345,7 @@
             this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
             this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
             this.nameDataGridViewTextBoxColumn.ReadOnly = true;
+            this.nameDataGridViewTextBoxColumn.Width = 60;
             // 
             // pathDataGridViewTextBoxColumn
             // 
@@ -329,6 +353,7 @@
             this.pathDataGridViewTextBoxColumn.HeaderText = "Path";
             this.pathDataGridViewTextBoxColumn.Name = "pathDataGridViewTextBoxColumn";
             this.pathDataGridViewTextBoxColumn.ReadOnly = true;
+            this.pathDataGridViewTextBoxColumn.Width = 54;
             // 
             // sizeInKiloByteDataGridViewTextBoxColumn
             // 
@@ -336,14 +361,16 @@
             this.sizeInKiloByteDataGridViewTextBoxColumn.HeaderText = "Size KB";
             this.sizeInKiloByteDataGridViewTextBoxColumn.Name = "sizeInKiloByteDataGridViewTextBoxColumn";
             this.sizeInKiloByteDataGridViewTextBoxColumn.ReadOnly = true;
+            this.sizeInKiloByteDataGridViewTextBoxColumn.Width = 69;
             // 
-            // Form1
+            // ArtExportChecker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(901, 887);
+            this.Controls.Add(this.btnOpenResizer);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox4);
@@ -352,11 +379,11 @@
             this.Controls.Add(this.groupBox1);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "Form1";
+            this.Name = "ArtExportChecker";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "VNTool - Find Duplicate Files";
-            this.Load += new System.EventHandler(this.Form1_Load);
-            this.Click += new System.EventHandler(this.Form1_Click);
+            this.Text = "VNTool - Art Export Checker";
+            this.Load += new System.EventHandler(this.ArtExportChecker_Load);
+            this.Click += new System.EventHandler(this.ArtExportChecker_Click);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvDuplicated)).EndInit();
             this.groupBox4.ResumeLayout(false);
@@ -400,6 +427,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn pathDataGridViewTextBoxColumn1;
         private System.Windows.Forms.ContextMenuStrip cmsIgnore;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.Button btnOpenResizer;
     }
 }
 

@@ -33,6 +33,20 @@ namespace VNToolWF
             }
         }
 
+        public Tuple<int,int> Dimensions
+        {
+            get
+            {
+                Tuple<int, int> imgDimensions;
+                using (Image img = Image.FromFile(path))
+                {
+                    imgDimensions = new Tuple<int, int>(img.Width, img.Height);
+                }
+
+                return imgDimensions;
+            }
+        }
+
         public FileItem(string fullPath)
         {
             name = Path.GetFileName(fullPath);

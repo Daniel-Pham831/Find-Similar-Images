@@ -98,19 +98,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandHandler.cs" />
+    <Compile Include="DGVUtils.cs" />
     <Compile Include="FileHandler.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="ArtExportChecker.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="ArtExportChecker.Designer.cs">
+      <DependentUpon>ArtExportChecker.cs</DependentUpon>
     </Compile>
     <Compile Include="ImageHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FileItem.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="ResizeImageForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ResizeImageForm.Designer.cs">
+      <DependentUpon>ResizeImageForm.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="ArtExportChecker.resx">
+      <DependentUpon>ArtExportChecker.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -121,6 +128,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="ResizeImageForm.resx">
+      <DependentUpon>ResizeImageForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\FileItem.datasource" />
     <None Include="Properties\DataSources\Form1.datasource" />
