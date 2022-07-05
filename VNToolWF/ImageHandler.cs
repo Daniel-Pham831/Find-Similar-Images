@@ -46,7 +46,7 @@ namespace VNToolWF
 
         // resize the bigImg into the smallImg size
         // return the resized image path name: hashNowTime-(filename).png
-        public static string ResizeWithMagick(string bigImgPath, string smallImgPath)
+        private static string ResizeWithMagick(string bigImgPath, string smallImgPath)
         {
             string prefix = DateTime.Now.GetHashCode().ToString() + "-";
             string fileName = Path.GetFileName(bigImgPath);
@@ -114,6 +114,33 @@ namespace VNToolWF
             File.Delete(resizedImagePath);
 
             return areTheySimilar;
+        }
+
+        public static void Resize(string imgPath, float targetPercent, bool shouldReplace = false)
+        {
+            if (targetPercent == 100) return; //No needs to resize
+
+            using (MagickImage original = new MagickImage(imgPath))
+            {
+                original.AutoOrient();
+                original.Strip();
+                original.ColorSpace = ColorSpace.Lab;
+
+                using (MagickImage resized = (MagickImage)original.Clone())
+                {
+                    resized.FilterType = FilterType.LanczosSharp;
+                    resized.Resize(new Percentage(targetPercent));
+
+                    resized.ColorSpace = ColorSpace.sRGB;
+                    resized.UnsharpMask(1.5, 1, 0.7, 0.02);
+
+                    resized.Quality = 100;
+
+                    string resizePath = imgPath.Replace(Path.GetFileName(imgPath),"Resize-"+ Path.GetFileName(imgPath));
+
+                    resized.Write(shouldReplace?imgPath:resizePath);
+                }
+            }
         }
     }
 }

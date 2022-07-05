@@ -150,7 +150,7 @@ namespace VNToolWF
 
             ProcessLargeImages(filePaths);
             ProcessDuplicateNames(filePaths);
-            ProcessSimilarImages(RemoveDuplicateNames(filePaths));
+          //  ProcessSimilarImages(RemoveDuplicateNames(filePaths));
         }
 
         private List<string> RemoveDuplicateNames(List<string> filePaths)

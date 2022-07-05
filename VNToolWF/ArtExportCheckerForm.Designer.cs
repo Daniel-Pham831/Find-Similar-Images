@@ -1,6 +1,6 @@
 ﻿namespace VNToolWF
 {
-    partial class ArtExportChecker
+    partial class ArtExportCheckerForm
     {
         /// <summary>
         /// Required designer variable.
@@ -32,6 +32,10 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dgvDuplicated = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pathDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.sizeInKiloByteDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.fileItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.labReadme = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -39,25 +43,22 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dgvSimilar = new System.Windows.Forms.DataGridView();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnOpenDialog = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.dgvLarge = new System.Windows.Forms.DataGridView();
-            this.cmsIgnore = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnOpenResizer = new System.Windows.Forms.Button();
             this.nameDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupIndexDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sizeInKiloByteDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pathDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.fileItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.pathDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.sizeInKiloByteDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cmsIgnore = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnOpenResizer = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDuplicated)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fileItemBindingSource)).BeginInit();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -65,7 +66,6 @@
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLarge)).BeginInit();
             this.cmsIgnore.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.fileItemBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -114,6 +114,34 @@
             this.Column1.Name = "Column1";
             this.Column1.ReadOnly = true;
             this.Column1.Width = 90;
+            // 
+            // nameDataGridViewTextBoxColumn
+            // 
+            this.nameDataGridViewTextBoxColumn.DataPropertyName = "name";
+            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
+            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
+            this.nameDataGridViewTextBoxColumn.ReadOnly = true;
+            this.nameDataGridViewTextBoxColumn.Width = 60;
+            // 
+            // pathDataGridViewTextBoxColumn
+            // 
+            this.pathDataGridViewTextBoxColumn.DataPropertyName = "path";
+            this.pathDataGridViewTextBoxColumn.HeaderText = "Path";
+            this.pathDataGridViewTextBoxColumn.Name = "pathDataGridViewTextBoxColumn";
+            this.pathDataGridViewTextBoxColumn.ReadOnly = true;
+            this.pathDataGridViewTextBoxColumn.Width = 54;
+            // 
+            // sizeInKiloByteDataGridViewTextBoxColumn
+            // 
+            this.sizeInKiloByteDataGridViewTextBoxColumn.DataPropertyName = "sizeInKiloByte";
+            this.sizeInKiloByteDataGridViewTextBoxColumn.HeaderText = "Size KB";
+            this.sizeInKiloByteDataGridViewTextBoxColumn.Name = "sizeInKiloByteDataGridViewTextBoxColumn";
+            this.sizeInKiloByteDataGridViewTextBoxColumn.ReadOnly = true;
+            this.sizeInKiloByteDataGridViewTextBoxColumn.Width = 69;
+            // 
+            // fileItemBindingSource
+            // 
+            this.fileItemBindingSource.DataSource = typeof(VNToolWF.FileItem);
             // 
             // groupBox4
             // 
@@ -203,6 +231,30 @@
             this.Column2.ReadOnly = true;
             this.Column2.Width = 90;
             // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.DataPropertyName = "name";
+            this.dataGridViewTextBoxColumn1.HeaderText = "Name";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dataGridViewTextBoxColumn1.Width = 60;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            this.dataGridViewTextBoxColumn2.DataPropertyName = "path";
+            this.dataGridViewTextBoxColumn2.HeaderText = "Path";
+            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
+            this.dataGridViewTextBoxColumn2.Width = 54;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            this.dataGridViewTextBoxColumn3.DataPropertyName = "sizeInKiloByte";
+            this.dataGridViewTextBoxColumn3.HeaderText = "Size (KB)";
+            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
+            this.dataGridViewTextBoxColumn3.Width = 75;
+            // 
             // btnOpenDialog
             // 
             this.btnOpenDialog.DialogResult = System.Windows.Forms.DialogResult.OK;
@@ -254,31 +306,6 @@
             this.dgvLarge.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dgv_KeyDown);
             this.dgvLarge.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgv_MouseClick);
             // 
-            // cmsIgnore
-            // 
-            this.cmsIgnore.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1});
-            this.cmsIgnore.Name = "cmsIgnore";
-            this.cmsIgnore.Size = new System.Drawing.Size(143, 26);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(142, 22);
-            this.toolStripMenuItem1.Text = "Ignore folder";
-            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
-            // 
-            // btnOpenResizer
-            // 
-            this.btnOpenResizer.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOpenResizer.Location = new System.Drawing.Point(697, 592);
-            this.btnOpenResizer.Name = "btnOpenResizer";
-            this.btnOpenResizer.Size = new System.Drawing.Size(194, 39);
-            this.btnOpenResizer.TabIndex = 5;
-            this.btnOpenResizer.Text = "Open Image Resizer";
-            this.btnOpenResizer.UseVisualStyleBackColor = true;
-            this.btnOpenResizer.MouseClick += new System.Windows.Forms.MouseEventHandler(this.btnOpenResizer_MouseClick);
-            // 
             // nameDataGridViewTextBoxColumn1
             // 
             this.nameDataGridViewTextBoxColumn1.DataPropertyName = "name";
@@ -311,57 +338,30 @@
             this.pathDataGridViewTextBoxColumn1.ReadOnly = true;
             this.pathDataGridViewTextBoxColumn1.Width = 54;
             // 
-            // fileItemBindingSource
+            // cmsIgnore
             // 
-            this.fileItemBindingSource.DataSource = typeof(VNToolWF.FileItem);
+            this.cmsIgnore.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1});
+            this.cmsIgnore.Name = "cmsIgnore";
+            this.cmsIgnore.Size = new System.Drawing.Size(143, 26);
             // 
-            // dataGridViewTextBoxColumn1
+            // toolStripMenuItem1
             // 
-            this.dataGridViewTextBoxColumn1.DataPropertyName = "name";
-            this.dataGridViewTextBoxColumn1.HeaderText = "Name";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            this.dataGridViewTextBoxColumn1.Width = 60;
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(142, 22);
+            this.toolStripMenuItem1.Text = "Ignore folder";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
-            // dataGridViewTextBoxColumn2
+            // btnOpenResizer
             // 
-            this.dataGridViewTextBoxColumn2.DataPropertyName = "path";
-            this.dataGridViewTextBoxColumn2.HeaderText = "Path";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.ReadOnly = true;
-            this.dataGridViewTextBoxColumn2.Width = 54;
-            // 
-            // dataGridViewTextBoxColumn3
-            // 
-            this.dataGridViewTextBoxColumn3.DataPropertyName = "sizeInKiloByte";
-            this.dataGridViewTextBoxColumn3.HeaderText = "Size (KB)";
-            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-            this.dataGridViewTextBoxColumn3.ReadOnly = true;
-            this.dataGridViewTextBoxColumn3.Width = 75;
-            // 
-            // nameDataGridViewTextBoxColumn
-            // 
-            this.nameDataGridViewTextBoxColumn.DataPropertyName = "name";
-            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
-            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
-            this.nameDataGridViewTextBoxColumn.ReadOnly = true;
-            this.nameDataGridViewTextBoxColumn.Width = 60;
-            // 
-            // pathDataGridViewTextBoxColumn
-            // 
-            this.pathDataGridViewTextBoxColumn.DataPropertyName = "path";
-            this.pathDataGridViewTextBoxColumn.HeaderText = "Path";
-            this.pathDataGridViewTextBoxColumn.Name = "pathDataGridViewTextBoxColumn";
-            this.pathDataGridViewTextBoxColumn.ReadOnly = true;
-            this.pathDataGridViewTextBoxColumn.Width = 54;
-            // 
-            // sizeInKiloByteDataGridViewTextBoxColumn
-            // 
-            this.sizeInKiloByteDataGridViewTextBoxColumn.DataPropertyName = "sizeInKiloByte";
-            this.sizeInKiloByteDataGridViewTextBoxColumn.HeaderText = "Size KB";
-            this.sizeInKiloByteDataGridViewTextBoxColumn.Name = "sizeInKiloByteDataGridViewTextBoxColumn";
-            this.sizeInKiloByteDataGridViewTextBoxColumn.ReadOnly = true;
-            this.sizeInKiloByteDataGridViewTextBoxColumn.Width = 69;
+            this.btnOpenResizer.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnOpenResizer.Location = new System.Drawing.Point(697, 592);
+            this.btnOpenResizer.Name = "btnOpenResizer";
+            this.btnOpenResizer.Size = new System.Drawing.Size(194, 39);
+            this.btnOpenResizer.TabIndex = 5;
+            this.btnOpenResizer.Text = "Open Image Resizer";
+            this.btnOpenResizer.UseVisualStyleBackColor = true;
+            this.btnOpenResizer.MouseClick += new System.Windows.Forms.MouseEventHandler(this.btnOpenResizer_MouseClick);
             // 
             // ArtExportChecker
             // 
@@ -386,6 +386,7 @@
             this.Click += new System.EventHandler(this.ArtExportChecker_Click);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvDuplicated)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fileItemBindingSource)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
@@ -393,7 +394,6 @@
             this.groupBox5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvLarge)).EndInit();
             this.cmsIgnore.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.fileItemBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -412,7 +412,6 @@
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Label labReadme;
         private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.DataGridView dgvLarge;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn pathDataGridViewTextBoxColumn;
@@ -428,6 +427,7 @@
         private System.Windows.Forms.ContextMenuStrip cmsIgnore;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.Button btnOpenResizer;
+        public System.Windows.Forms.DataGridView dgvLarge;
     }
 }
 

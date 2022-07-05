@@ -21,6 +21,12 @@ namespace VNToolWF
             CommandHandler.ExecuteWinMergeCommand(itemGroups[fileItem.groupIndex]);
         }
 
+        public static void ClearAllData(DataGridView dgv)
+        {
+            dgv.DataSource = null;
+            dgv.Refresh();
+        }
+
         public static void HandleKeyEvents(DataGridView dgv, KeyEventArgs e)
         {
             switch (e.KeyCode)
@@ -109,6 +115,19 @@ namespace VNToolWF
 
             dgvToShow.AutoResizeColumns();
             dgvToShow.ClearSelection();
+        }
+
+        public static void UpdateDGVData(ref DataGridView dgv)
+        {
+            List<FileItem> newDataToShow = new List<FileItem>();
+
+            foreach (DataGridViewRow row in dgv.Rows)
+            {
+                FileItem newFileItem = new FileItem((row.DataBoundItem as FileItem).path);
+                newDataToShow.Add(newFileItem);
+            }
+
+            ShowDataGridView(ref dgv, newDataToShow);
         }
     }
 }

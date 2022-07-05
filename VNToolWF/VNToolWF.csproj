@@ -100,11 +100,11 @@
     <Compile Include="CommandHandler.cs" />
     <Compile Include="DGVUtils.cs" />
     <Compile Include="FileHandler.cs" />
-    <Compile Include="ArtExportChecker.cs">
+    <Compile Include="ArtExportCheckerForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ArtExportChecker.Designer.cs">
-      <DependentUpon>ArtExportChecker.cs</DependentUpon>
+    <Compile Include="ArtExportCheckerForm.Designer.cs">
+      <DependentUpon>ArtExportCheckerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ImageHandler.cs" />
     <Compile Include="Program.cs" />
@@ -116,8 +116,8 @@
     <Compile Include="ResizeImageForm.Designer.cs">
       <DependentUpon>ResizeImageForm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="ArtExportChecker.resx">
-      <DependentUpon>ArtExportChecker.cs</DependentUpon>
+    <EmbeddedResource Include="ArtExportCheckerForm.resx">
+      <DependentUpon>ArtExportCheckerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

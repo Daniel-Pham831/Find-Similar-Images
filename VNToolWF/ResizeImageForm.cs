@@ -12,17 +12,59 @@ namespace VNToolWF
 {
     public partial class ResizeImageForm : Form
     {
-        public ResizeImageForm()
+        private FileHandler fileHandler;
+        private ArtExportCheckerForm controlForm;
+
+        public ResizeImageForm(FileHandler fileHandler, ArtExportCheckerForm controlForm)
         {
             InitializeComponent();
+            this.fileHandler = fileHandler;
+            this.controlForm = controlForm;
         }
 
-        private void btnResizeAll_Click(object sender, EventArgs e)
+        private void dgv_KeyDown(object sender, KeyEventArgs e)
         {
-
+            DGVUtils.HandleKeyEvents(sender as DataGridView, e);
         }
 
-        public void SetLargeDGV(List<FileItem> data)
+        private void dgvLarge_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            DGVUtils.OpenWinMergeCompare(sender as DataGridView, e.RowIndex, fileHandler.LargeGroups);
+        }
+
+        private async void btnResizeAll_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Processing!!!", "Information");
+
+            List<Task> tasks = new List<Task>();
+
+            foreach (DataGridViewRow row in dgvLarge.Rows)
+            {
+                string path = (row.DataBoundItem as FileItem).path;
+
+                float targetPercent = float.Parse(row.Cells["TargetPercent"].Value.ToString());
+                bool shouldReplace = (bool)row.Cells["ShouldReplace"].Value;
+
+                Task task = new Task(() => ImageHandler.Resize(path, targetPercent, shouldReplace));
+                task.Start();
+                tasks.Add(task);
+            }
+
+            await AwaitAllTasks(tasks);
+
+            MessageBox.Show("Replaced Success", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private async Task AwaitAllTasks(List<Task> tasks)
+        {
+            while (tasks.Count > 0)
+            {
+                var t = await Task.WhenAny(tasks);
+                tasks.Remove(t);
+            }
+        }
+
+        public void SetLargeDGV(List<FileItem> data,FileHandler fileHandler)
         {
             if(dgvLarge.DataSource != data)
                 dgvLarge.DataSource = data;
@@ -39,6 +81,8 @@ namespace VNToolWF
             {
                 row.Cells["ShouldReplace"].Value = true;
             }
+
+            SetTargetDimensionsForAll(100);
 
             dgvLarge.Show();
         }
@@ -119,6 +163,21 @@ namespace VNToolWF
             {
                 SetTargetDimensions(row.Index, targetResize);
             }
+        }
+
+        private void SetTargetDimensionsForAll(float targetResize)
+        {
+            foreach (DataGridViewRow row in dgvLarge.Rows)
+            {
+                SetTargetDimensions(row.Index, targetResize);
+            }
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            DGVUtils.UpdateDGVData(ref controlForm.dgvLarge);
+
+            base.OnClosed(e);
         }
     }
 }

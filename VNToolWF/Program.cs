@@ -16,7 +16,7 @@ namespace VNToolWF
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ArtExportChecker());
+            Application.Run(new ArtExportCheckerForm());
         }
     }
 }

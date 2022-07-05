@@ -14,7 +14,7 @@ using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace VNToolWF
 {
-    public partial class ArtExportChecker : Form
+    public partial class ArtExportCheckerForm : Form
     {
         private readonly string readmeText = "Choose the correct Resource Folder." +
             "\n\nCtrl + Click or Shift + Click to select multiple files." +
@@ -28,11 +28,9 @@ namespace VNToolWF
         // Forms
         private ResizeImageForm resizerForm;
 
-        public ArtExportChecker()
+        public ArtExportCheckerForm()
         {
             InitializeComponent();
-
-            resizerForm = new ResizeImageForm();
         }
 
         private void ArtExportChecker_Load(object sender, EventArgs e)
@@ -91,6 +89,10 @@ namespace VNToolWF
                 {
                     path = dialog.FileName;
                     SetLabelText(ref labProcess, "Processing...");
+                    DGVUtils.ClearAllData(dgvDuplicated);
+                    DGVUtils.ClearAllData(dgvSimilar);
+                    DGVUtils.ClearAllData(dgvLarge);
+
                     fileHandler.ProcessFolder(path);
                 }
             }
@@ -110,6 +112,7 @@ namespace VNToolWF
         {
             DGVUtils.OpenWinMergeCompare(sender as DataGridView, e.RowIndex, fileHandler.SimilarGroups);
         }
+
         private void dgvLarge_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             DGVUtils.OpenWinMergeCompare(sender as DataGridView, e.RowIndex, fileHandler.LargeGroups);
@@ -157,8 +160,9 @@ namespace VNToolWF
 
             if (data != null)
             {
-                resizerForm.SetLargeDGV(data);
-                resizerForm.ShowDialog();
+                resizerForm = new ResizeImageForm(fileHandler,this);
+                resizerForm.SetLargeDGV(data,fileHandler);
+                resizerForm.Show();
             }
             else
             {

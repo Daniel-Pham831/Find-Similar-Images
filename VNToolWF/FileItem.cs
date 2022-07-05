@@ -51,10 +51,13 @@ namespace VNToolWF
         {
             name = Path.GetFileName(fullPath);
             path = fullPath;
-            size = new FileInfo(fullPath).Length;
         }
 
-        public long size { get; set; }
+        public long size { 
+            get {
+                return new FileInfo(path).Length;
+            }
+        }
 
         public static List<string> GetAllPaths(List<FileItem> fileItems)
         {
@@ -67,7 +70,10 @@ namespace VNToolWF
 
             return paths;
         }
+
+        public void Update()
+        {
+
+        }
     }
-
-
 }
